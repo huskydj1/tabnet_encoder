@@ -490,17 +490,18 @@ class TabNetNoEmbeddings(torch.nn.Module):
     def forward(self, x):
         res = 0
         steps_output, M_loss = self.encoder(x)
-        print(steps_output.shape)
-        res = torch.sum(torch.stack(steps_output, dim=0), dim=0)
+        return steps_output
 
-        if self.is_multi_task:
-            # Result will be in list format
-            out = []
-            for task_mapping in self.multi_task_mappings:
-                out.append(task_mapping(res))
-        else:
-            out = self.final_mapping(res)
-        return out, M_loss
+        # res = torch.sum(torch.stack(steps_output, dim=0), dim=0)
+
+        # if self.is_multi_task:
+        #     # Result will be in list format
+        #     out = []
+        #     for task_mapping in self.multi_task_mappings:
+        #         out.append(task_mapping(res))
+        # else:
+        #     out = self.final_mapping(res)
+        # return out, M_loss
 
     def forward_masks(self, x):
         return self.encoder.forward_masks(x)
